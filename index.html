@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عثمان - ویڈیو اپلوڈر ڈیش بورڈ</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; margin: 0; padding: 20px; text-align: center; direction: rtl; }
+        .card { background: white; padding: 25px; border-radius: 12px; max-width: 500px; margin: 30px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #333; margin-bottom: 20px; }
+        input[type="password"], input[type="text"], input[type="file"], textarea {
+            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;
+        }
+        .btn { background-color: #ff0050; color: white; padding: 12px 20px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-size: 18px; font-weight: bold; margin-top: 10px; }
+        .btn:hover { background-color: #e00047; }
+        .checkbox-group { text-align: right; margin: 15px 0; }
+        .checkbox-item { margin: 10px 0; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .checkbox-item input { width: 20px; height: 20px; cursor: pointer; }
+        #dashboard { display: none; }
+        .error { color: red; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. پاسورڈ والا صفحہ -->
+    <div id="login-page" class="card">
+        <h2>🔒 پاسورڈ درج کریں</h2>
+        <p>اپنی ذاتی ویب سائٹ میں داخل ہونے کے لیے پاسورڈ لکھیں:</p>
+        <input type="password" id="pass-input" placeholder="یہاں پاسورڈ لکھیں">
+        <button class="btn" onclick="checkPassword()">لاگ ان کریں</button>
+        <div id="err-msg" class="error"></div>
+    </div>
+
+    <!-- 2. مین ڈیش بورڈ (ویڈیو اپلوڈ کرنے والا صفحہ) -->
+    <div id="dashboard" class="card">
+        <h2>🚀 عثمان کا ویڈیو اپلوڈ پینل</h2>
+        
+        <label style="display:block; text-align:right; font-weight:bold;">ویڈیو فائل منتخب کریں:</label>
+        <input type="file" id="video-file" accept="video/*">
+
+        <label style="display:block; text-align:right; font-weight:bold; margin-top:10px;">عنوان (Title / Caption):</label>
+        <textarea id="video-title" rows="3" placeholder="یہاں اپنی ویڈیو کا عنوان یا کیپشن لکھیں..."></textarea>
+
+        <div class="checkbox-group">
+            <label style="font-weight:bold;">کن کن پلیٹ فارمز پر اپلوڈ کرنا ہے؟</label>
+            <div class="checkbox-item">
+                <input type="checkbox" id="yt" checked>
+                <label for="yt">🔴 یوٹیوب (YouTube)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="tt" checked>
+                <label for="tt">🖤 ٹک ٹاک (TikTok)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="fb" checked>
+                <label for="fb">🔵 فیس بک (Facebook)</label>
+            </div>
+                <div class="checkbox-item">
+                <input type="checkbox" id="insta" checked>
+                <label for="insta">🟣 انسٹاگرام (Instagram)</label>
+            </div>
+        </div>
+
+        <button class="btn" style="background-color: #28a745;" onclick="uploadVideo()">اپلوڈ شروع کریں</button>
+        <button class="btn" style="background-color: #6c757d; margin-top:10px;" onclick="logout()">لاگ آؤٹ</button>
+    </div>
+
+    <script>
+        const myPassword = "1234";
+
+        function checkPassword() {
+            const input = document.getElementById('pass-input').value;
+            if (input === myPassword) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('err-msg').innerText = '';
+            } else {
+                document.getElementById('err-msg').innerText = 'غلط پاسورڈ! دوبارہ کوشش کریں۔';
+            }
+        }
+
+        function uploadVideo() {
+            const file = document.getElementById('video-file').files[0];
+            const title = document.getElementById('video-title').value;
+
+            if (!file) {
+                alert('براہ کرم پہلے کوئی ویڈیو منتخب کریں!');
+                return;
+            }
+
+            let selectedPlatforms = [];
+            if(document.getElementById('yt').checked) selectedPlatforms.push('YouTube');
+            if(document.getElementById('tt').checked) selectedPlatforms.push('TikTok');
+            if(document.getElementById('fb').checked) selectedPlatforms.push('Facebook');
+            if(document.getElementById('insta').checked) selectedPlatforms.push('Instagram');
+
+            if (selectedPlatforms.length === 0) {
+                alert('کم از کم ایک سوشل میڈیا پلیٹ فارم منتخب کریں!');
+                return;
+            }
+
+            alert('آپ کی ویڈیو منتخب شدہ پلیٹ فارمز (' + selectedPlatforms.join(', ') + ') پر اپلوڈ کی جا رہی ہے!');
+        }
+
+        function logout() {
+            document.getElementById('pass-input').value = '';
+            document.getElementById('login-page').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
